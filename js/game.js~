@@ -24,9 +24,9 @@ function Game(){
 	var loadingCounter = 0;
 	var ruleOutput;
 	var mainInterval = function(){
-		if(loadingCounter < 15000){
+		if(loadingCounter < 500){
 			loadingCounter++;
-			loadGame.loadingMover(15000);
+			loadGame.loadingMover(500);
 		}
 		else{
 			if(powerFlag == true){
