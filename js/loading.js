@@ -47,3 +47,15 @@ function Loading(){
 		
 	}
 }
+var loadGame = new Loading();
+var loadingCounter = 0;
+var loadingIntervalId = function(){
+	if(loadingCounter < 600){
+		loadingCounter++;
+		loadGame.loadingMover(600);
+	}
+	else{
+		clearInterval(loadingIntervalId);
+	}	
+}
+setInterval(loadingIntervalId,20);

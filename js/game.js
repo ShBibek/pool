@@ -1,5 +1,4 @@
 function Game(){
-	var loadGame = new Loading();
 	var parent = document.getElementsByTagName("body")[0];
 	var gameWindow1 = new GameWindow(parent);
 	//function that places stick
@@ -21,58 +20,51 @@ function Game(){
 	var ruleFlag = false; //rule test condition is false
 	var noticeBoardCounter = 0; //time periode to show notice baord
 	var stickRotation = new Rotator(gameWindow1.bg.board.stick); //wrapper of the stick
-	var loadingCounter = 0;
 	var ruleOutput;
 	var mainInterval = function(){
-		if(loadingCounter < 15000){
-			loadingCounter++;
-			loadGame.loadingMover(15000);
+		if(powerFlag == true){
+			gameWindow1.bg.power.powerMover(); //continue power moving animation
 		}
-		else{
-			if(powerFlag == true){
-				gameWindow1.bg.power.powerMover(); //continue power moving animation
+		if(stickFlag == true){
+			gameWindow1.bg.power.resetToBottom(); 
+			whiteBallFlag  = gameWindow1.bg.board.stick.move(powerLevel/2); 
+			ruleFlag = false;
+		}
+		if(whiteBallFlag  == true){
+			stickFlag = false;
+			gameWindow1.bg.board.ballsArray[0].velocityStarter(gameWindow1.bg.board.stick.rotatedX,gameWindow1.bg.board.stick.rotatedY,powerLevel); //white ball velocity started
+			moveBalls = true;
+			whiteBallFlag  = false;
+			ballMoverFlag = true; 
+		}
+		if(ballMoverFlag == true){
+			gameWindow1.bg.board.stick.hide(); //hide the stick
+			gameWindow1.bg.board.ballMover();
+			ruleFlag =  !(gameWindow1.bg.board.velProfile()); //true if ball is moving;
+			
+		}
+		if(ruleFlag == true){
+			ballMoverFlag = false;
+			ruleFlag = false;
+			ruleOutput = gameWindow1.gameRule.ruleTest(gameWindow1.bg.board.ballsArray,gameWindow1.players,gameWindow1.bg.board.ballsArray[0].firstCollide);
+			if(ruleOutput == 1){
+				clearInterval(mainIntervalId); //game is over and operate on new Game menu
 			}
-			if(stickFlag == true){
-				gameWindow1.bg.power.resetToBottom(); 
-				whiteBallFlag  = gameWindow1.bg.board.stick.move(powerLevel/2); 
-				ruleFlag = false;
+			else{
+				writeBoard(ruleOutput);	
 			}
-			if(whiteBallFlag  == true){
-				stickFlag = false;
-				gameWindow1.bg.board.ballsArray[0].velocityStarter(gameWindow1.bg.board.stick.rotatedX,gameWindow1.bg.board.stick.rotatedY,powerLevel); //white ball velocity started
-				moveBalls = true;
-				whiteBallFlag  = false;
-				ballMoverFlag = true; 
-			}
-			if(ballMoverFlag == true){
-				gameWindow1.bg.board.stick.hide(); //hide the stick
-				gameWindow1.bg.board.ballMover();
-				ruleFlag =  !(gameWindow1.bg.board.velProfile()); //true if ball is moving;
-				
-			}
-			if(ruleFlag == true){
-				ballMoverFlag = false;
-				ruleFlag = false;
-				ruleOutput = gameWindow1.gameRule.ruleTest(gameWindow1.bg.board.ballsArray,gameWindow1.players,gameWindow1.bg.board.ballsArray[0].firstCollide);
-				if(ruleOutput == 1){
-					clearInterval(mainIntervalId); //game is over and operate on new Game menu
-				}
-				else{
-					writeBoard(ruleOutput);	
-				}
-				
-				noticeBoardCounter++;
-			}
-			if(noticeBoardCounter > 0){
-				noticeBoardCounter++;
-				if(noticeBoardCounter>150){
-					gameWindow1.gameRule.hideBoard();
-					powerFlag = true;
-					buttonClicked= false;
-					gameWindow1.bg.board.ballsArray[0].reset();
-					placeStick();
-					noticeBoardCounter = 0;
-				}
+			
+			noticeBoardCounter++;
+		}
+		if(noticeBoardCounter > 0){
+			noticeBoardCounter++;
+			if(noticeBoardCounter>150){
+				gameWindow1.gameRule.hideBoard();
+				powerFlag = true;
+				buttonClicked= false;
+				gameWindow1.bg.board.ballsArray[0].reset();
+				placeStick();
+				noticeBoardCounter = 0;
 			}
 		}
 	}
