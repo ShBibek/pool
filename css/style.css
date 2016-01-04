@@ -11,9 +11,7 @@ body{
 .loadingPage{
 	width: 100%;
 	height: 100%;
-	background-image: url("../images/floor2.jpeg");
-	background-size: 100%;
-	background-repeat: no-repeat;
+	background-color: #fffccc;
 	position: absolute;
 	z-index: 10;
 	top: 0px;
