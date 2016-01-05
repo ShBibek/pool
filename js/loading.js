@@ -41,21 +41,9 @@ function Loading(){
 		rightPer -= step;
 		moveRight(rightPer);
 		if(rightPer <= 0){
-			hideElement();
+			hideElement(); //hide the given div
 			rightPer = 100;	
 		}
 		
 	}
 }
-var loadGame = new Loading();
-var loadingCounter = 0;
-var loadingIntervalId = function(){
-	if(loadingCounter < 600){
-		loadingCounter++;
-		loadGame.loadingMover(600);
-	}
-	else{
-		clearInterval(loadingIntervalId);
-	}	
-}
-setInterval(loadingIntervalId,20);
